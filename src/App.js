@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
+import Signin from './components/Signin/Signin';
+import Register from './components/Register/Register';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
-import FaceRecognition from './components/FaceRecognition/FaceRecognition';
-import Signin from './components/Signin/Signin';
-import Register from './components/Register/Register';
-import Particles from 'react-particles-js';
 import './App.css';
-import 'tachyons'
-import Clarifai from 'clarifai';
+import 'tachyons';
 
 // This is my own api key
 const app = new Clarifai.App({
@@ -44,7 +44,7 @@ class App extends Component {
         id: '',
         name: '',
         email: '',
-        password: '',
+        // password: '',
         entries: 0,
         join: ''
       }
@@ -56,18 +56,18 @@ class App extends Component {
       id: data.id,
       name: data.name,
       email: data.email,
-      password: data.password,
+      // password: data.password,
       entries: data.entries,
       join: data.join
     }})
   }
 
   // connect to the back-end
-  componentDidMount() {
-    fetch('http://localhost:3000')
-      .then(response => response.json())
-      .then(console.log)
-  }
+  // componentDidMount() {
+  //   fetch('http://localhost:3000')
+  //     .then(response => response.json())
+  //     .then(console.log)
+  // }
 
 
   calculateFaceLocation = (data) => {

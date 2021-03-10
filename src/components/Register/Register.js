@@ -11,15 +11,15 @@ class Register extends React.Component {
     }
     // define a variable to store email value
     onEmailChange = (event) => {
-        this.setState({email: event.target.value});
+        this.setState({email: event.target.value})
     }
     // define a variable to store password value
     onPasswordChange = (event) => {
-        this.setState({password: event.target.value});
+        this.setState({password: event.target.value})
     }
     // define a variable to store password value
     onNameChange = (event) => {
-        this.setState({name: event.target.value});
+        this.setState({name: event.target.value})
     }
     
     // Finish registering can directly sign in
@@ -29,8 +29,8 @@ class Register extends React.Component {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                email: this.state.signInEmail,
-                password: this.state.signInPassword,
+                email: this.state.email,
+                password: this.state.password,
                 name: this.state.name
             })
         })
