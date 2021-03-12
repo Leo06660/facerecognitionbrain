@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
+// import Clarifai from 'clarifai'; this should move to the back-end
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
@@ -11,10 +11,7 @@ import Rank from './components/Rank/Rank';
 import './App.css';
 import 'tachyons';
 
-// This is my own api key
-const app = new Clarifai.App({
-  apiKey: 'de0373b3e78b45f88765b4a36ec18e4b'
- });
+
 
 const particlesOptions2 = {
   particles: {
@@ -28,7 +25,21 @@ const particlesOptions2 = {
   }
 }
 
-
+// Create an initial state
+const initialState = {
+  input: '',
+  imageUrl: '',
+  faceBox: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    join: ''
+  }
+}
 
 class App extends Component {
   // we need to create "state" to let the app knows what value the user entered
@@ -94,34 +105,38 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
-    app.models
-      .predict(
-        Clarifai.FACE_DETECT_MODEL, 
-        this.state.input
-        )
-      // .then(response => console.log(response))
-      .then(response => {
-        if (response) {
-          fetch('http://localhost:3000/image', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                id: this.state.user.id
-            })
-          })
-          .then(response => response.json())
-          .then(count => {
-            this.setState(Object.assign(this.state.user, { entries: count }))
-          })
-        }  
-        this.displayFaceBox(this.calculateFaceLocation(response))
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          input: this.state.input
       })
-      .catch(err=>console.log(err));
+    })
+    .then(response => response.json())
+    // .then(response => console.log(response))
+    .then(response => {
+      if (response) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+              id: this.state.user.id
+          })
+        })
+        .then(response => response.json())
+        .then(count => {
+          this.setState(Object.assign(this.state.user, { entries: count }))
+        })
+        .catch(console.log)
+      }  
+      this.displayFaceBox(this.calculateFaceLocation(response))
+    })
+    .catch(err=>console.log(err)); // this should be only for Clarifai api fail
   }
 
   onRouteChange = (value) => {
     if (value === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState) // initialize the state
     } else if (value === 'youarein') {
       this.setState({isSignedIn: true})
     }
