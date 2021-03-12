@@ -13,6 +13,7 @@ const ImageLinkForm = ({onInputChange, onButtonSubmit}) => {
                         className='f4 pa2 w-70 center' 
                         type='text' 
                         onChange={onInputChange}
+                        // value='Paste your image link here'
                     />
                     <button 
                         className='w-30 grow f5 link ph3 pv2 dib white bg-light-blue'
